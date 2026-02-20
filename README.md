@@ -42,8 +42,10 @@ Bien que faisant partie de la suite `card-mod`, la fonctionnalité `mod-card` es
 
 1. Installez les dépendances HACS.
 2. Redémarrez Home Assistant.
-3. Importez `lovelace/dehumidifier_tile.yaml` dans votre dashboard.
-4. Adaptez les entités à votre configuration (`humidifier.deshumidificateur`, etc.).
+3. Importez la carte correspondant à votre appareil dans votre dashboard :
+   - Déshumidificateur : `lovelace/dehumidifier_tile.yaml`
+   - Climatiseur : `lovelace/climatiseur.yaml`
+4. Adaptez les entités à votre configuration (`humidifier.*`, `climate.*`, `select.*`, `sensor.*`).
 
 👉 Pour une procédure détaillée et le dépannage, consultez :
 - [Installation détaillée](./docs/installation.md)
