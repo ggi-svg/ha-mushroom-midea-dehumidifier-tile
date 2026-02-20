@@ -1,0 +1,224 @@
+type: custom:mod-card
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 18px !important;
+      overflow: hidden !important;
+      border: 1px solid rgba(255,255,255,0.10) !important;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.35) !important;
+
+      /* Couleur dynamique selon le mode (quand ON) */
+      background: {{
+        (
+          'linear-gradient(145deg, ' ~
+          (
+            'rgba(156, 39, 176, 0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Clothes-Dry'
+            else 'rgba(3, 169, 244, 0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Continuous'
+            else 'rgba(255, 193, 7, 0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Manual'
+            else 'rgba(120, 144, 156, 0.14)'
+          )
+          ~ ' 0%, rgba(18,18,18,0.92) 75%)'
+        )
+        if is_state('humidifier.deshumidificateur','on')
+        else 'rgba(18,18,18,0.92)'
+      }} !important;
+
+      /* Liseré subtil selon le mode */
+      outline: 1px solid {{
+        'rgba(156, 39, 176, 0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Clothes-Dry'
+        else 'rgba(3, 169, 244, 0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Continuous'
+        else 'rgba(255, 193, 7, 0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Manual'
+        else 'rgba(120, 144, 156, 0.18)'
+      }} !important;
+      outline-offset: -1px !important;
+
+      padding: 10px 10px 10px 10px !important;
+    }
+card:
+  type: vertical-stack
+  cards:
+    - type: custom:mushroom-template-card
+      entity: humidifier.deshumidificateur
+      primary: Déshumidificateur
+      secondary: >-
+        {% set raw_mode = state_attr(entity, 'mode') %} {% set mode_fr =
+          'Manuel' if raw_mode == 'Manual'
+          else 'Continuel' if raw_mode == 'Continuous'
+          else 'Intense' if raw_mode == 'Clothes-Dry'
+          else raw_mode
+        %} {% set tgt  = state_attr(entity, 'humidity') %} {% set curh =
+        states('sensor.deshumidificateur_current_humidity') %} {% set fs   =
+        states('select.deshumidificateur_fan_speed') %} {% if
+        is_state(entity,'on') %}
+          {{ mode_fr }} • Cible {{ tgt }}% • Actuel {{ curh }}% • Ventil {{ fs }}
+        {% else %}
+          En veille • Humidité {{ curh }}% • Ventil {{ fs }}
+        {% endif %}
+      icon: mdi:fan
+      icon_color: |-
+        {% if not is_state(entity,'on') %}
+          disabled
+        {% else %}
+          {% if state_attr(entity,'mode') == 'Clothes-Dry' %} purple
+          {% elif state_attr(entity,'mode') == 'Continuous' %} light-blue
+          {% elif state_attr(entity,'mode') == 'Manual' %} amber
+          {% else %} blue
+          {% endif %}
+        {% endif %}
+      layout: horizontal
+      fill_container: true
+      multiline_secondary: true
+      tap_action:
+        action: toggle
+      hold_action:
+        action: more-info
+      card_mod:
+        style:
+          .: |
+            ha-card {
+              background: transparent !important;
+              border: none !important;
+              box-shadow: none !important;
+              padding: 0 !important;
+              margin: 0 !important;
+            }
+          mushroom-shape-icon$: |
+            .shape {
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              transform-origin: 50% 50% !important;
+            }
+
+            ha-state-icon svg, ha-icon svg {
+              transform-box: fill-box !important;
+              transform-origin: center !important;
+            }
+
+            {% if is_state('humidifier.deshumidificateur','on') %}
+            .shape {
+              animation: spin 2.5s linear infinite !important;
+            }
+            {% endif %}
+
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to   { transform: rotate(360deg); }
+            }
+    - type: custom:mushroom-chips-card
+      alignment: center
+      chips:
+        - type: template
+          icon: mdi:tshirt-crew
+          content: Intense
+          icon_color: >-
+            {{ 'purple' if
+            is_state_attr('humidifier.deshumidificateur','mode','Clothes-Dry')
+            else 'grey' }}
+          tap_action:
+            action: call-service
+            service: humidifier.set_mode
+            data:
+              entity_id: humidifier.deshumidificateur
+              mode: Clothes-Dry
+        - type: template
+          icon: mdi:infinity
+          content: Continuel
+          icon_color: >-
+            {{ 'light-blue' if
+            is_state_attr('humidifier.deshumidificateur','mode','Continuous')
+            else 'grey' }}
+          tap_action:
+            action: call-service
+            service: humidifier.set_mode
+            data:
+              entity_id: humidifier.deshumidificateur
+              mode: Continuous
+        - type: template
+          icon: mdi:hand-back-right
+          content: Manuel
+          icon_color: >-
+            {{ 'amber' if
+            is_state_attr('humidifier.deshumidificateur','mode','Manual') else
+            'grey' }}
+          tap_action:
+            action: call-service
+            service: humidifier.set_mode
+            data:
+              entity_id: humidifier.deshumidificateur
+              mode: Manual
+      card_mod:
+        style: |
+          ha-card {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 6px 0 0 0 !important;
+            margin: 0 !important;
+          }
+          mushroom-chip {
+            --chip-background: rgba(255,255,255,0.08) !important;
+            --chip-border-radius: 999px !important;
+            transform: scale(0.92);
+            margin: 0 2px !important;
+          }
+    - type: custom:mushroom-chips-card
+      alignment: center
+      chips:
+        - type: template
+          icon: mdi:fan-speed-1
+          content: Low
+          icon_color: >-
+            {{ 'green' if is_state('select.deshumidificateur_fan_speed','Low')
+            else 'grey' }}
+          tap_action:
+            action: call-service
+            service: select.select_option
+            data:
+              entity_id: select.deshumidificateur_fan_speed
+              option: Low
+        - type: template
+          icon: mdi:fan-speed-2
+          content: Med
+          icon_color: >-
+            {{ 'amber' if
+            is_state('select.deshumidificateur_fan_speed','Medium') else 'grey'
+            }}
+          tap_action:
+            action: call-service
+            service: select.select_option
+            data:
+              entity_id: select.deshumidificateur_fan_speed
+              option: Medium
+        - type: template
+          icon: mdi:fan-speed-3
+          content: High
+          icon_color: >-
+            {{ 'deep-orange' if
+            is_state('select.deshumidificateur_fan_speed','High') else 'grey' }}
+          tap_action:
+            action: call-service
+            service: select.select_option
+            data:
+              entity_id: select.deshumidificateur_fan_speed
+              option: High
+      card_mod:
+        style: |
+          {% set m = state_attr('humidifier.deshumidificateur','mode') %}
+          {% if m != 'Manual' and m != 'Continuous' %}
+          ha-card { display: none !important; }
+          {% else %}
+          ha-card {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 6px 0 0 0 !important;
+            margin: 0 !important;
+          }
+          mushroom-chip {
+            --chip-background: rgba(255,255,255,0.08) !important;
+            --chip-border-radius: 999px !important;
+            transform: scale(0.92);
+            margin: 0 2px !important;
+          }
+          {% endif %}
