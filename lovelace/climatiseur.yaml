@@ -1,4 +1,3 @@
-
 type: custom:mod-card
 card_mod:
   style: |
@@ -24,17 +23,11 @@ card_mod:
         else 'rgba(18,18,18,0.92)'
       }} !important;
       outline: 1px solid {{
-        'rgba(120,144,156,0.18)'
-        if is_state('climate.152832117217942_climate','off')
-           or is_state('climate.152832117217942_climate','unavailable')
-           or is_state('climate.152832117217942_climate','unknown')
-        else (
-          'rgba(0,229,255,0.34)' if is_state('climate.152832117217942_climate','cool')
-          else 'rgba(255,0,153,0.34)' if is_state('climate.152832117217942_climate','dry')
-          else 'rgba(255,214,0,0.34)' if is_state('climate.152832117217942_climate','fan_only')
-          else 'rgba(118,255,3,0.28)' if is_state('climate.152832117217942_climate','auto')
-          else 'rgba(120,144,156,0.18)'
-        )
+        'rgba(0,229,255,0.34)' if is_state('climate.152832117217942_climate','cool')
+        else 'rgba(255,0,153,0.34)' if is_state('climate.152832117217942_climate','dry')
+        else 'rgba(255,214,0,0.34)' if is_state('climate.152832117217942_climate','fan_only')
+        else 'rgba(118,255,3,0.28)' if is_state('climate.152832117217942_climate','auto')
+        else 'rgba(120,144,156,0.18)'
       }} !important;
       outline-offset: -1px !important;
     }
@@ -44,7 +37,7 @@ card:
     - type: custom:mushroom-template-card
       entity: climate.152832117217942_climate
       primary: Climatisation Chambre
-      secondary: |-
+      secondary: >-
         {% set s = states(entity) %}
         {% set cur = state_attr(entity,'current_temperature') %}
         {% set tgt = state_attr(entity,'temperature') %}
@@ -79,23 +72,33 @@ card:
               padding: 0 !important;
               margin: 0 !important;
             }
-          mushroom-shape-icon$: |
+          mushroom-shape-icon$: >
             @keyframes spin {
               from { transform: rotate(0deg); }
               to   { transform: rotate(360deg); }
             }
-            {% if states('climate.152832117217942_climate') in ['cool','dry','fan_only','auto'] %}
-            .shape { animation: spin 3s linear infinite !important; transform-origin: 50% 50% !important; }
-            {% endif %}
-          mushroom-shape-icon$ ha-icon$: |
-            @keyframes spin {
-              from { transform: rotate(0deg); }
-              to   { transform: rotate(360deg); }
-            }
-            {% if states('climate.152832117217942_climate') in ['cool','dry','fan_only','auto'] %}
-            svg { animation: spin 3s linear infinite !important; transform-origin: center !important; transform-box: fill-box !important; }
-            {% endif %}
 
+            {% if states('climate.152832117217942_climate') in
+            ['cool','dry','fan_only','auto'] %}
+
+            .shape { animation: spin 3s linear infinite !important;
+            transform-origin: 50% 50% !important; }
+
+            {% endif %}
+          mushroom-shape-icon$ ha-icon$: >
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to   { transform: rotate(360deg); }
+            }
+
+            {% if states('climate.152832117217942_climate') in
+            ['cool','dry','fan_only','auto'] %}
+
+            svg { animation: spin 3s linear infinite !important;
+            transform-origin: center !important; transform-box: fill-box
+            !important; }
+
+            {% endif %}
     - type: custom:mushroom-climate-card
       entity: climate.152832117217942_climate
       show_temperature_control: true
@@ -111,17 +114,17 @@ card:
             padding: 0 !important;
           }
           :host { display: block; margin-top: 6px !important; }
-
     - type: custom:mushroom-chips-card
       alignment: center
       chips:
         - type: template
           icon: mdi:snowflake
           content: Froid
-          icon_color: "{{ 'cyan' if is_state('climate.152832117217942_climate','cool') else 'grey' }}"
+          icon_color: >-
+            {{ 'cyan' if is_state('climate.152832117217942_climate','cool') else 'grey' }}
           tap_action:
-            action: perform-action
-            perform_action: climate.set_hvac_mode
+            action: call-service
+            service: climate.set_hvac_mode
             target:
               entity_id: climate.152832117217942_climate
             data:
@@ -129,10 +132,11 @@ card:
         - type: template
           icon: mdi:fan
           content: Ventil
-          icon_color: "{{ 'amber' if is_state('climate.152832117217942_climate','fan_only') else 'grey' }}"
+          icon_color: >-
+            {{ 'amber' if is_state('climate.152832117217942_climate','fan_only') else 'grey' }}
           tap_action:
-            action: perform-action
-            perform_action: climate.set_hvac_mode
+            action: call-service
+            service: climate.set_hvac_mode
             target:
               entity_id: climate.152832117217942_climate
             data:
@@ -140,10 +144,11 @@ card:
         - type: template
           icon: mdi:water-percent
           content: Sec
-          icon_color: "{{ 'pink' if is_state('climate.152832117217942_climate','dry') else 'grey' }}"
+          icon_color: >-
+            {{ 'pink' if is_state('climate.152832117217942_climate','dry') else 'grey' }}
           tap_action:
-            action: perform-action
-            perform_action: climate.set_hvac_mode
+            action: call-service
+            service: climate.set_hvac_mode
             target:
               entity_id: climate.152832117217942_climate
             data:
@@ -151,10 +156,11 @@ card:
         - type: template
           icon: mdi:auto-mode
           content: Auto
-          icon_color: "{{ 'lime' if is_state('climate.152832117217942_climate','auto') else 'grey' }}"
+          icon_color: >-
+            {{ 'lime' if is_state('climate.152832117217942_climate','auto') else 'grey' }}
           tap_action:
-            action: perform-action
-            perform_action: climate.set_hvac_mode
+            action: call-service
+            service: climate.set_hvac_mode
             target:
               entity_id: climate.152832117217942_climate
             data:
@@ -174,60 +180,185 @@ card:
             transform: scale(0.92);
             margin: 0 2px !important;
           }
-
-    - type: custom:mushroom-chips-card
-      alignment: center
-      chips:
-        - type: template
-          icon: mdi:fan-speed-1
-          content: Low
-          icon_color: "{{ 'green' if is_state_attr('climate.152832117217942_climate','fan_mode','low') else 'grey' }}"
-          tap_action:
-            action: perform-action
-            perform_action: climate.set_fan_mode
-            target:
-              entity_id: climate.152832117217942_climate
-            data:
-              fan_mode: low
-        - type: template
-          icon: mdi:fan-speed-3
-          content: High
-          icon_color: "{{ 'deep-orange' if is_state_attr('climate.152832117217942_climate','fan_mode','high') else 'grey' }}"
-          tap_action:
-            action: perform-action
-            perform_action: climate.set_fan_mode
-            target:
-              entity_id: climate.152832117217942_climate
-            data:
-              fan_mode: high
-        - type: template
-          icon: mdi:fan-auto
-          content: Auto
-          icon_color: "{{ 'light-blue' if is_state_attr('climate.152832117217942_climate','fan_mode','auto') else 'grey' }}"
-          tap_action:
-            action: perform-action
-            perform_action: climate.set_fan_mode
-            target:
-              entity_id: climate.152832117217942_climate
-            data:
-              fan_mode: auto
-      card_mod:
-        style: |
-          {% set s = states('climate.152832117217942_climate') %}
-          {% if s in ['unavailable','unknown','dry','auto'] %}
-          ha-card { display: none !important; }
-          {% else %}
-          ha-card {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            padding: 6px 0 0 0 !important;
-            margin: 0 !important;
-          }
-          mushroom-chip {
-            --chip-background: rgba(255,255,255,0.08) !important;
-            --chip-border-radius: 999px !important;
-            transform: scale(0.92);
-            margin: 0 2px !important;
-          }
-          {% endif %}
+    - type: conditional
+      conditions:
+        - condition: state
+          entity: climate.152832117217942_climate
+          state_not: "off"
+        - condition: state
+          entity: climate.152832117217942_climate
+          state_not: unavailable
+        - condition: state
+          entity: climate.152832117217942_climate
+          state_not: unknown
+      card:
+        type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                styles:
+                  card:
+                    - background: none
+                    - border: none
+                    - box-shadow: none
+                    - flex: "1 1 auto"
+              - type: custom:button-card
+                icon: mdi:minus
+                color: red
+                size: 20px
+                styles:
+                  card:
+                    - background: rgba(255,255,255,0.08)
+                    - border-radius: 999px
+                    - border: none
+                    - box-shadow: none
+                    - height: 36px
+                    - width: 36px
+                    - min-width: 36px
+                    - max-width: 36px
+                    - padding: 0
+                    - flex: "0 0 36px"
+                  icon:
+                    - width: 20px
+                tap_action:
+                  action: call-service
+                  service: climate.set_temperature
+                  service_data:
+                    temperature: |
+                      [[[
+                        const tgt = states['climate.152832117217942_climate'].attributes.temperature;
+                        return parseFloat(tgt || 20) - 1;
+                      ]]]
+                  target:
+                    entity_id: climate.152832117217942_climate
+              - type: custom:button-card
+                name: |
+                  [[[
+                    const tgt = states['climate.152832117217942_climate'].attributes.temperature;
+                    return tgt ? tgt + '°C' : '--';
+                  ]]]
+                icon: mdi:thermometer
+                color: |
+                  [[[
+                    const s = states['climate.152832117217942_climate'].state;
+                    if (s === 'cool') return 'cyan';
+                    if (s === 'fan_only') return 'amber';
+                    if (s === 'dry') return 'pink';
+                    if (s === 'auto') return 'lime';
+                    return 'grey';
+                  ]]]
+                size: 20px
+                styles:
+                  card:
+                    - background: rgba(255,255,255,0.14)
+                    - border-radius: 999px
+                    - border: none
+                    - box-shadow: none
+                    - height: 36px
+                    - width: auto
+                    - min-width: 80px
+                    - max-width: 120px
+                    - padding: 0 12px
+                    - flex: "0 0 auto"
+                  name:
+                    - font-size: 1.05em
+                    - font-weight: "600"
+                tap_action:
+                  action: more-info
+                  entity: climate.152832117217942_climate
+              - type: custom:button-card
+                icon: mdi:plus
+                color: cyan
+                size: 20px
+                styles:
+                  card:
+                    - background: rgba(255,255,255,0.08)
+                    - border-radius: 999px
+                    - border: none
+                    - box-shadow: none
+                    - height: 36px
+                    - width: 36px
+                    - min-width: 36px
+                    - max-width: 36px
+                    - padding: 0
+                    - flex: "0 0 36px"
+                  icon:
+                    - width: 20px
+                tap_action:
+                  action: call-service
+                  service: climate.set_temperature
+                  service_data:
+                    temperature: |
+                      [[[
+                        const tgt = states['climate.152832117217942_climate'].attributes.temperature;
+                        return parseFloat(tgt || 20) + 1;
+                      ]]]
+                  target:
+                    entity_id: climate.152832117217942_climate
+              - type: custom:button-card
+                styles:
+                  card:
+                    - background: none
+                    - border: none
+                    - box-shadow: none
+                    - flex: "1 1 auto"
+          - type: custom:mushroom-chips-card
+            alignment: center
+            chips:
+              - type: template
+                icon: mdi:fan-speed-1
+                content: Low
+                icon_color: >-
+                  {{ 'green' if is_state_attr('climate.152832117217942_climate','fan_mode','low') else 'grey' }}
+                tap_action:
+                  action: call-service
+                  service: climate.set_fan_mode
+                  target:
+                    entity_id: climate.152832117217942_climate
+                  data:
+                    fan_mode: low
+              - type: template
+                icon: mdi:fan-speed-3
+                content: High
+                icon_color: >-
+                  {{ 'deep-orange' if is_state_attr('climate.152832117217942_climate','fan_mode','high') else 'grey' }}
+                tap_action:
+                  action: call-service
+                  service: climate.set_fan_mode
+                  target:
+                    entity_id: climate.152832117217942_climate
+                  data:
+                    fan_mode: high
+              - type: template
+                icon: mdi:fan-auto
+                content: Auto
+                icon_color: >-
+                  {{ 'light-blue' if is_state_attr('climate.152832117217942_climate','fan_mode','auto') else 'grey' }}
+                tap_action:
+                  action: call-service
+                  service: climate.set_fan_mode
+                  target:
+                    entity_id: climate.152832117217942_climate
+                  data:
+                    fan_mode: auto
+            card_mod:
+              style: |
+                {% set s = states('climate.152832117217942_climate') %}
+                {% if s in ['dry','auto'] %}
+                ha-card { display: none !important; }
+                {% else %}
+                ha-card {
+                  background: transparent !important;
+                  border: none !important;
+                  box-shadow: none !important;
+                  padding: 6px 0 0 0 !important;
+                  margin: 0 !important;
+                }
+                mushroom-chip {
+                  --chip-background: rgba(255,255,255,0.08) !important;
+                  --chip-border-radius: 999px !important;
+                  transform: scale(0.92);
+                  margin: 0 2px !important;
+                }
+                {% endif %}
