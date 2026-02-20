@@ -41,18 +41,26 @@ card:
       entity: humidifier.deshumidificateur
       primary: Déshumidificateur
       secondary: >-
-        {% set raw_mode = state_attr(entity, 'mode') %} {% set mode_fr =
+        {% set humidifier_entity = entity %}
+        {% set humidity_sensor = 'sensor.deshumidificateur_current_humidity' %}
+        {% set fan_speed_entity = 'select.deshumidificateur_fan_speed' %}
+        {% set raw_mode = state_attr(humidifier_entity, 'mode') | default('Inconnu') %}
+        {% set mode_fr =
           'Manuel' if raw_mode == 'Manual'
           else 'Continuel' if raw_mode == 'Continuous'
           else 'Intense' if raw_mode == 'Clothes-Dry'
           else raw_mode
-        %} {% set tgt  = state_attr(entity, 'humidity') %} {% set curh =
-        states('sensor.deshumidificateur_current_humidity') %} {% set fs   =
-        states('select.deshumidificateur_fan_speed') %} {% if
-        is_state(entity,'on') %}
-          {{ mode_fr }} • Cible {{ tgt }}% • Actuel {{ curh }}% • Ventil {{ fs }}
+        %}
+        {% set tgt = state_attr(humidifier_entity, 'humidity') | default('-') %}
+        {% set curh = states(humidity_sensor) %}
+        {% set fs = states(fan_speed_entity) %}
+        {% set curh_display = '-' if curh in ['unknown', 'unavailable', 'none', 'None', ''] else curh %}
+        {% set fs_display = '-' if fs in ['unknown', 'unavailable', 'none', 'None', ''] else fs %}
+        {% set curh_text = curh_display ~ '%' if curh_display != '-' else '-' %}
+        {% if is_state(humidifier_entity,'on') %}
+          {{ mode_fr }} • Cible {{ tgt }}% • Actuel {{ curh_text }} • Ventil {{ fs_display }}
         {% else %}
-          En veille • Humidité {{ curh }}% • Ventil {{ fs }}
+          En veille • Humidité {{ curh_text }} • Ventil {{ fs_display }}
         {% endif %}
       icon: mdi:fan
       icon_color: |-
@@ -204,8 +212,9 @@ card:
               option: High
       card_mod:
         style: |
-          {% set m = state_attr('humidifier.deshumidificateur','mode') %}
-          {% if m != 'Manual' and m != 'Continuous' %}
+          {% set humidifier_entity = 'humidifier.deshumidificateur' %}
+          {% set m = state_attr(humidifier_entity, 'mode') | default('unknown') %}
+          {% if m not in ['Manual', 'Continuous'] %}
           ha-card { display: none !important; }
           {% else %}
           ha-card {

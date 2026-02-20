@@ -1,7 +1,19 @@
-# Troubleshooting
+# Dépannage
 
-If fan speeds do not appear:
-Check attribute 'mode' in Developer Tools.
+## Les vitesses ventilateur n'apparaissent pas
 
-If animation doesn't work:
-Verify card-mod is installed.
+1. Vérifiez le mode actif dans Outils de développement (`state_attr(<humidifier>, 'mode')`).
+2. Les vitesses sont visibles uniquement en `Manual` ou `Continuous`.
+3. Vérifiez que l'entité `select.*_fan_speed` existe et expose `Low/Medium/High`.
+
+## L'animation de l'icône ne fonctionne pas
+
+1. Vérifiez que `card-mod` est bien installé et chargé comme ressource.
+2. Confirmez que l'entité humidifier est à l'état `on`.
+3. Videz le cache navigateur puis rechargez l'interface.
+
+## Les textes affichent `unknown` ou `unavailable`
+
+1. Vérifiez l'état des entités dans Outils de développement.
+2. Confirmez les IDs d'entités dans le YAML.
+3. Redémarrez Home Assistant après changement d'intégration.
