@@ -1,19 +1,97 @@
-# Home Assistant Mushroom Midea Dehumidifier Tile
+# 🚀 Premium Midea Dehumidifier UI for Home Assistant
+### *Advanced Glassmorphism & SVG-Driven Interface*
 
-Tuile Lovelace avancée pour déshumidificateur Midea.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![HACS: Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
+[![Dashboard: Mushroom](https://img.shields.io/badge/Dashboard-Mushroom-blue.svg)](https://github.com/piitaya/lovelace-mushroom)
 
-## Features
-- Dynamic background per mode (Intense / Continuel / Manuel)
-- Animated fan icon when device is ON
-- Smart fan speed visibility
-- Fully documented
-- No extra conditional plugins required
+Cette interface haut de gamme pour déshumidificateurs Midea (et compatibles) transcende les limites standards de Home Assistant. Elle repose sur une architecture **monocoque** pour offrir une expérience utilisateur fluide, réactive et une esthétique moderne.
 
-## Installation
-Install via HACS:
-- Mushroom Cards
-- card-mod
-- mod-card
+## 💎 Points Forts (Value Proposition)
 
-Copy YAML from:
-lovelace/dehumidifier_tile.yaml
+* **Design Glassmorphism :** Effet de transparence et dégradés dynamiques basés sur l'état de l'entité.
+* **Architecture Monolithique :** Suppression des bordures disgracieuses entre les contrôles et la carte principale pour un rendu "unifié".
+* **Ingénierie SVG :** Animation de rotation réelle de l'icône ventilateur avec un centre de rotation stabilisé.
+* **UX Contextuelle :** Adaptation visuelle (couleur du liseré et intensité du fond) selon le mode actif (*Auto*, *Manual*, *Clothes-Dry*).
+* **Cockpit Tout-en-un :** Centralisation des modes et des vitesses de ventilation sur un seul bloc compact.
+
+---
+
+## 🛠️ Prérequis Technologiques (HACS)
+
+La mise en œuvre de cette interface repose sur des outils avancés de personnalisation du DOM de Home Assistant. Vous devez impérativement installer les composants suivants via **HACS** :
+
+### 1. Mushroom Cards
+La base esthétique de l'interface.
+* **Repository :** [piitaya/lovelace-mushroom](https://github.com/piitaya/lovelace-mushroom)
+
+### 2. Card-Mod
+L'outil indispensable pour l'injection de CSS et la gestion des animations.
+* **Repository :** [thomasloven/lovelace-card-mod](https://github.com/thomasloven/lovelace-card-mod)
+
+### 3. Mod-Card
+Bien que faisant partie de la suite `card-mod`, la fonctionnalité `mod-card` est cruciale ici. Elle permet d'appliquer des styles CSS à des cartes qui n'en acceptent normalement pas (comme les `vertical-stack`), permettant ainsi de créer le châssis monocoque du projet.
+* **Documentation technique :** [Card-mod / Mod-card feature](https://github.com/thomasloven/lovelace-card-mod#mod-card)
+
+---
+
+## 🚀 Installation
+
+1.  Vérifiez que vos dépendances sont à jour.
+2.  Importez le code YAML de la tuile dans votre tableau de bord.
+3.  Adaptez les entités à votre configuration (`humidifier.deshumidificateur`).
+
+---
+
+## 🤝 Contributions
+Les pull requests sont les bienvenues. Pour les changements majeurs, veuillez d'abord ouvrir une issue pour discuter de vos propositions.
+
+**License :** [MIT](https://choosealicense.com/licenses/mit/)# 🚀 Premium Midea Dehumidifier UI for Home Assistant
+### *Advanced Glassmorphism & SVG-Driven Interface*
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![HACS: Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
+[![Dashboard: Mushroom](https://img.shields.io/badge/Dashboard-Mushroom-blue.svg)](https://github.com/piitaya/lovelace-mushroom)
+
+Cette interface haut de gamme pour déshumidificateurs Midea (et compatibles) transcende les limites standards de Home Assistant. Elle repose sur une architecture **monocoque** pour offrir une expérience utilisateur fluide, réactive et une esthétique moderne.
+
+## 💎 Points Forts (Value Proposition)
+
+* **Design Glassmorphism :** Effet de transparence et dégradés dynamiques basés sur l'état de l'entité.
+* **Architecture Monolithique :** Suppression des bordures disgracieuses entre les contrôles et la carte principale pour un rendu "unifié".
+* **Ingénierie SVG :** Animation de rotation réelle de l'icône ventilateur avec un centre de rotation stabilisé.
+* **UX Contextuelle :** Adaptation visuelle (couleur du liseré et intensité du fond) selon le mode actif (*Auto*, *Manual*, *Clothes-Dry*).
+* **Cockpit Tout-en-un :** Centralisation des modes et des vitesses de ventilation sur un seul bloc compact.
+
+---
+
+## 🛠️ Prérequis Technologiques (HACS)
+
+La mise en œuvre de cette interface repose sur des outils avancés de personnalisation du DOM de Home Assistant. Vous devez impérativement installer les composants suivants via **HACS** :
+
+### 1. Mushroom Cards
+La base esthétique de l'interface.
+* **Repository :** [piitaya/lovelace-mushroom](https://github.com/piitaya/lovelace-mushroom)
+
+### 2. Card-Mod
+L'outil indispensable pour l'injection de CSS et la gestion des animations.
+* **Repository :** [thomasloven/lovelace-card-mod](https://github.com/thomasloven/lovelace-card-mod)
+
+### 3. Mod-Card
+Bien que faisant partie de la suite `card-mod`, la fonctionnalité `mod-card` est cruciale ici. Elle permet d'appliquer des styles CSS à des cartes qui n'en acceptent normalement pas (comme les `vertical-stack`), permettant ainsi de créer le châssis monocoque du projet.
+* **Repository :** [Card-mod / Mod-card feature](https://github.com/thomasloven/lovelace-card-mod#mod-card)
+
+---
+
+## 🚀 Installation
+
+1.  Vérifiez que vos dépendances sont à jour.
+2.  Importez le code YAML de la tuile dans votre tableau de bord.
+3.  Adaptez les entités à votre configuration (`humidifier.deshumidificateur`).
+
+---
+
+## 🤝 Contributions
+Les pull requests sont les bienvenues. Pour les changements majeurs, veuillez d'abord ouvrir une issue pour discuter de vos propositions.
+
+**License :** [MIT](https://choosealicense.com/licenses/mit/)
