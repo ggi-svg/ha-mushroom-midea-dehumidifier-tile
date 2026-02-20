@@ -36,11 +36,18 @@ Bien que faisant partie de la suite `card-mod`, la fonctionnalité `mod-card` es
 
 ---
 
-## 🚀 Installation
+## 🚀 Installation rapide
 
-1.  Vérifiez que vos dépendances sont à jour.
-2.  Importez le code YAML de la tuile dans votre tableau de bord.
-3.  Adaptez les entités à votre configuration (`humidifier.deshumidificateur`).
+1. Installez les dépendances HACS.
+2. Redémarrez Home Assistant.
+3. Importez `lovelace/dehumidifier_tile.yaml` dans votre dashboard.
+4. Adaptez les entités à votre configuration (`humidifier.deshumidificateur`, etc.).
+
+👉 Pour une procédure détaillée et le dépannage, consultez :
+- [Installation détaillée](./docs/installation.md)
+- [Configuration](./docs/configuration.md)
+- [FAQ](./docs/faq.md)
+- [Dépannage](./docs/troubleshooting.md)
 
 ---
 
