@@ -17,3 +17,10 @@
 1. Vérifiez l'état des entités dans Outils de développement.
 2. Confirmez les IDs d'entités dans le YAML.
 3. Redémarrez Home Assistant après changement d'intégration.
+
+
+## La carte climatiseur ne répond pas
+
+1. Vérifiez que l'entité `climate.*` existe et accepte les modes (`cool`, `fan_only`, `dry`, `auto`).
+2. Remplacez `climate.152832117217942_climate` par votre propre entité dans `lovelace/climatiseur.yaml`.
+3. Vérifiez dans Outils de développement que les services `climate.set_hvac_mode` et `climate.set_temperature` sont bien disponibles pour l'appareil.
