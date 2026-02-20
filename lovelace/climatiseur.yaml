@@ -24,11 +24,17 @@ card_mod:
         else 'rgba(18,18,18,0.92)'
       }} !important;
       outline: 1px solid {{
-        'rgba(0,229,255,0.34)' if is_state('climate.152832117217942_climate','cool')
-        else 'rgba(255,0,153,0.34)' if is_state('climate.152832117217942_climate','dry')
-        else 'rgba(255,214,0,0.34)' if is_state('climate.152832117217942_climate','fan_only')
-        else 'rgba(118,255,3,0.28)' if is_state('climate.152832117217942_climate','auto')
-        else 'rgba(120,144,156,0.18)'
+        'rgba(120,144,156,0.18)'
+        if is_state('climate.152832117217942_climate','off')
+           or is_state('climate.152832117217942_climate','unavailable')
+           or is_state('climate.152832117217942_climate','unknown')
+        else (
+          'rgba(0,229,255,0.34)' if is_state('climate.152832117217942_climate','cool')
+          else 'rgba(255,0,153,0.34)' if is_state('climate.152832117217942_climate','dry')
+          else 'rgba(255,214,0,0.34)' if is_state('climate.152832117217942_climate','fan_only')
+          else 'rgba(118,255,3,0.28)' if is_state('climate.152832117217942_climate','auto')
+          else 'rgba(120,144,156,0.18)'
+        )
       }} !important;
       outline-offset: -1px !important;
     }

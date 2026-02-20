@@ -18,10 +18,14 @@ card_mod:
         else 'rgba(18,18,18,0.92)'
       }} !important;
       outline: 1px solid {{
-        'rgba(156,39,176,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Clothes-Dry'
-        else 'rgba(3,169,244,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Continuous'
-        else 'rgba(255,193,7,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Manual'
-        else 'rgba(120,144,156,0.18)'
+        'rgba(120,144,156,0.18)'
+        if not is_state('humidifier.deshumidificateur','on')
+        else (
+          'rgba(156,39,176,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Clothes-Dry'
+          else 'rgba(3,169,244,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Continuous'
+          else 'rgba(255,193,7,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Manual'
+          else 'rgba(120,144,156,0.18)'
+        )
       }} !important;
       outline-offset: -1px !important;
     }
