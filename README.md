@@ -6,6 +6,8 @@
 
 Cette interface haut de gamme pour déshumidificateurs Midea (et compatibles) transcende les limites standards de Home Assistant. Elle repose sur une architecture **monocoque** pour offrir une expérience utilisateur fluide, réactive et une esthétique moderne.
 
+![Preview](./assets/preview.gif)
+
 ## 💎 Points Forts (Value Proposition)
 
 * **Design Glassmorphism :** Effet de transparence et dégradés dynamiques basés sur l'état de l'entité.
