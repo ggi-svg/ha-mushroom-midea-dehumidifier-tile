@@ -7,6 +7,8 @@
 Cette interface haut de gamme pour déshumidificateurs Midea (et compatibles) transcende les limites standards de Home Assistant. Elle repose sur une architecture **monocoque** pour offrir une expérience utilisateur fluide, réactive et une esthétique moderne.
 
 ![Preview](./assets/preview.gif)
+![Preview](./assets/preview-clim.gif)
+
 
 ## 💎 Points Forts (Value Proposition)
 
