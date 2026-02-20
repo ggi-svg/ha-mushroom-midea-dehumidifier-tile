@@ -6,33 +6,24 @@ card_mod:
       overflow: hidden !important;
       border: 1px solid rgba(255,255,255,0.10) !important;
       box-shadow: 0 10px 26px rgba(0,0,0,0.35) !important;
-
-      /* Couleur dynamique selon le mode (quand ON) */
+      padding: 10px !important;
       background: {{
-        (
-          'linear-gradient(145deg, ' ~
-          (
-            'rgba(156, 39, 176, 0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Clothes-Dry'
-            else 'rgba(3, 169, 244, 0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Continuous'
-            else 'rgba(255, 193, 7, 0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Manual'
-            else 'rgba(120, 144, 156, 0.14)'
-          )
-          ~ ' 0%, rgba(18,18,18,0.92) 75%)'
-        )
+        'linear-gradient(145deg, ' ~
+        ('rgba(156,39,176,0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Clothes-Dry'
+        else 'rgba(3,169,244,0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Continuous'
+        else 'rgba(255,193,7,0.18)' if state_attr('humidifier.deshumidificateur','mode') == 'Manual'
+        else 'rgba(120,144,156,0.14)')
+        ~ ' 0%, rgba(18,18,18,0.92) 75%)'
         if is_state('humidifier.deshumidificateur','on')
         else 'rgba(18,18,18,0.92)'
       }} !important;
-
-      /* Liseré subtil selon le mode */
       outline: 1px solid {{
-        'rgba(156, 39, 176, 0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Clothes-Dry'
-        else 'rgba(3, 169, 244, 0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Continuous'
-        else 'rgba(255, 193, 7, 0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Manual'
-        else 'rgba(120, 144, 156, 0.18)'
+        'rgba(156,39,176,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Clothes-Dry'
+        else 'rgba(3,169,244,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Continuous'
+        else 'rgba(255,193,7,0.25)' if state_attr('humidifier.deshumidificateur','mode') == 'Manual'
+        else 'rgba(120,144,156,0.18)'
       }} !important;
       outline-offset: -1px !important;
-
-      padding: 10px 10px 10px 10px !important;
     }
 card:
   type: vertical-stack
@@ -40,38 +31,26 @@ card:
     - type: custom:mushroom-template-card
       entity: humidifier.deshumidificateur
       primary: Déshumidificateur
-      secondary: >-
-        {% set humidifier_entity = entity %}
-        {% set humidity_sensor = 'sensor.deshumidificateur_current_humidity' %}
-        {% set fan_speed_entity = 'select.deshumidificateur_fan_speed' %}
-        {% set raw_mode = state_attr(humidifier_entity, 'mode') | default('Inconnu') %}
-        {% set mode_fr =
-          'Manuel' if raw_mode == 'Manual'
-          else 'Continuel' if raw_mode == 'Continuous'
-          else 'Intense' if raw_mode == 'Clothes-Dry'
-          else raw_mode
-        %}
-        {% set tgt = state_attr(humidifier_entity, 'humidity') | default('-') %}
-        {% set curh = states(humidity_sensor) %}
-        {% set fs = states(fan_speed_entity) %}
-        {% set curh_display = '-' if curh in ['unknown', 'unavailable', 'none', 'None', ''] else curh %}
-        {% set fs_display = '-' if fs in ['unknown', 'unavailable', 'none', 'None', ''] else fs %}
-        {% set curh_text = curh_display ~ '%' if curh_display != '-' else '-' %}
-        {% if is_state(humidifier_entity,'on') %}
+      secondary: |-
+        {% set m = state_attr(entity,'mode') | default('Inconnu') %}
+        {% set mode_fr = 'Manuel' if m == 'Manual' else 'Continuel' if m == 'Continuous' else 'Intense' if m == 'Clothes-Dry' else m %}
+        {% set tgt = state_attr(entity,'humidity') | default('-') %}
+        {% set curh = states('sensor.deshumidificateur_current_humidity') %}
+        {% set fs = states('select.deshumidificateur_fan_speed') %}
+        {% set curh_text = '-' if curh in ['unknown','unavailable','none','None',''] else curh ~ '%' %}
+        {% set fs_display = '-' if fs in ['unknown','unavailable','none','None',''] else fs %}
+        {% if is_state(entity,'on') %}
           {{ mode_fr }} • Cible {{ tgt }}% • Actuel {{ curh_text }} • Ventil {{ fs_display }}
         {% else %}
           En veille • Humidité {{ curh_text }} • Ventil {{ fs_display }}
         {% endif %}
       icon: mdi:fan
       icon_color: |-
-        {% if not is_state(entity,'on') %}
-          disabled
-        {% else %}
-          {% if state_attr(entity,'mode') == 'Clothes-Dry' %} purple
-          {% elif state_attr(entity,'mode') == 'Continuous' %} light-blue
-          {% elif state_attr(entity,'mode') == 'Manual' %} amber
-          {% else %} blue
-          {% endif %}
+        {% if not is_state(entity,'on') %}disabled
+        {% elif state_attr(entity,'mode') == 'Clothes-Dry' %}purple
+        {% elif state_attr(entity,'mode') == 'Continuous' %}light-blue
+        {% elif state_attr(entity,'mode') == 'Manual' %}amber
+        {% else %}blue
         {% endif %}
       layout: horizontal
       fill_container: true
@@ -91,38 +70,29 @@ card:
               margin: 0 !important;
             }
           mushroom-shape-icon$: |
-            .shape {
-              display: flex !important;
-              align-items: center !important;
-              justify-content: center !important;
-              transform-origin: 50% 50% !important;
-            }
-
-            ha-state-icon svg, ha-icon svg {
-              transform-box: fill-box !important;
-              transform-origin: center !important;
-            }
-
-            {% if is_state('humidifier.deshumidificateur','on') %}
-            .shape {
-              animation: spin 2.5s linear infinite !important;
-            }
-            {% endif %}
-
             @keyframes spin {
               from { transform: rotate(0deg); }
               to   { transform: rotate(360deg); }
             }
+            {% if is_state('humidifier.deshumidificateur','on') %}
+            .shape { animation: spin 2.5s linear infinite !important; transform-origin: 50% 50% !important; }
+            {% endif %}
+          mushroom-shape-icon$ ha-icon$: |
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to   { transform: rotate(360deg); }
+            }
+            {% if is_state('humidifier.deshumidificateur','on') %}
+            svg { animation: spin 2.5s linear infinite !important; transform-origin: center !important; transform-box: fill-box !important; }
+            {% endif %}
+
     - type: custom:mushroom-chips-card
       alignment: center
       chips:
         - type: template
           icon: mdi:tshirt-crew
           content: Intense
-          icon_color: >-
-            {{ 'purple' if
-            is_state_attr('humidifier.deshumidificateur','mode','Clothes-Dry')
-            else 'grey' }}
+          icon_color: "{{ 'purple' if is_state_attr('humidifier.deshumidificateur','mode','Clothes-Dry') else 'grey' }}"
           tap_action:
             action: call-service
             service: humidifier.set_mode
@@ -132,10 +102,7 @@ card:
         - type: template
           icon: mdi:infinity
           content: Continuel
-          icon_color: >-
-            {{ 'light-blue' if
-            is_state_attr('humidifier.deshumidificateur','mode','Continuous')
-            else 'grey' }}
+          icon_color: "{{ 'light-blue' if is_state_attr('humidifier.deshumidificateur','mode','Continuous') else 'grey' }}"
           tap_action:
             action: call-service
             service: humidifier.set_mode
@@ -145,10 +112,7 @@ card:
         - type: template
           icon: mdi:hand-back-right
           content: Manuel
-          icon_color: >-
-            {{ 'amber' if
-            is_state_attr('humidifier.deshumidificateur','mode','Manual') else
-            'grey' }}
+          icon_color: "{{ 'amber' if is_state_attr('humidifier.deshumidificateur','mode','Manual') else 'grey' }}"
           tap_action:
             action: call-service
             service: humidifier.set_mode
@@ -170,15 +134,14 @@ card:
             transform: scale(0.92);
             margin: 0 2px !important;
           }
+
     - type: custom:mushroom-chips-card
       alignment: center
       chips:
         - type: template
           icon: mdi:fan-speed-1
           content: Low
-          icon_color: >-
-            {{ 'green' if is_state('select.deshumidificateur_fan_speed','Low')
-            else 'grey' }}
+          icon_color: "{{ 'green' if is_state('select.deshumidificateur_fan_speed','Low') else 'grey' }}"
           tap_action:
             action: call-service
             service: select.select_option
@@ -188,10 +151,7 @@ card:
         - type: template
           icon: mdi:fan-speed-2
           content: Med
-          icon_color: >-
-            {{ 'amber' if
-            is_state('select.deshumidificateur_fan_speed','Medium') else 'grey'
-            }}
+          icon_color: "{{ 'amber' if is_state('select.deshumidificateur_fan_speed','Medium') else 'grey' }}"
           tap_action:
             action: call-service
             service: select.select_option
@@ -201,9 +161,7 @@ card:
         - type: template
           icon: mdi:fan-speed-3
           content: High
-          icon_color: >-
-            {{ 'deep-orange' if
-            is_state('select.deshumidificateur_fan_speed','High') else 'grey' }}
+          icon_color: "{{ 'deep-orange' if is_state('select.deshumidificateur_fan_speed','High') else 'grey' }}"
           tap_action:
             action: call-service
             service: select.select_option
@@ -212,9 +170,8 @@ card:
               option: High
       card_mod:
         style: |
-          {% set humidifier_entity = 'humidifier.deshumidificateur' %}
-          {% set m = state_attr(humidifier_entity, 'mode') | default('unknown') %}
-          {% if m not in ['Manual', 'Continuous'] %}
+          {% set m = state_attr('humidifier.deshumidificateur','mode') | default('unknown') %}
+          {% if m not in ['Manual','Continuous'] %}
           ha-card { display: none !important; }
           {% else %}
           ha-card {
