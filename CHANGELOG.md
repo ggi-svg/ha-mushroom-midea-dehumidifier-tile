@@ -7,10 +7,11 @@ Ce projet suit un format inspiré de [Keep a Changelog](https://keepachangelog.c
 ### Added
 - Documentation enrichie : installation détaillée, configuration, FAQ et dépannage.
 - Liens de navigation documentaire depuis le README.
+- Nouvelle carte Lovelace pour climatiseur (`lovelace/climatiseur.yaml`).
 
 ### Changed
 - Renforcement de la robustesse des templates Lovelace pour mieux gérer les états `unknown` / `unavailable`.
-- Refactor léger du YAML pour améliorer la maintenabilité (variables d'entité locales dans les templates).
+- Optimisation et simplification de `lovelace/dehumidifier_tile.yaml` (templates et styles allégés, comportement inchangé).
 
 ## 1.0.0
 - Initial release
